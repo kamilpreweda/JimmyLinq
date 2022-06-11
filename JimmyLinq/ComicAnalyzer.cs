@@ -31,6 +31,15 @@ namespace JimmyLinq
             return grouped;
         }
         
-        
+        public static IEnumerable<string> GetReviews(IEnumerable<Comic> comics, IEnumerable<Review> reviews)
+        {
+            var joined =
+                from comic in comics
+                orderby comic.Issue
+                join review in reviews on comic.Issue equals review.Issue
+                select $"{review.Critic} ocenił nr {comic.Issue} '{comic.Name}' na {review.Score:0.00}.";
+
+            return joined;
+        }
     }
 }
