@@ -54,5 +54,33 @@ namespace JimmyLinqUnitTests
             var actualResults = ComicAnalyzer.GetReviews(testComics, testReviews).ToList();
             CollectionAssert.AreEqual(expectedResults, actualResults);
         }
+
+        [TestMethod]
+        public void ComicAnalyzer_Should_Handle_Weird_Review_Scores()
+        {
+            var testReviews = new[]
+            {
+                new Review() {Issue = 1, Critic = Critics.MuddyCritic, Score = -12.1212},
+                new Review() {Issue = 1, Critic = Critics.RottenTornadoes, Score = 391691234.48931},
+                new Review() {Issue = 2, Critic = Critics.RottenTornadoes, Score = 0},
+                new Review() {Issue = 2, Critic = Critics.MuddyCritic, Score = 40.3},
+                new Review() {Issue = 2, Critic = Critics.MuddyCritic, Score = 40.3},
+                new Review() {Issue = 2, Critic = Critics.MuddyCritic, Score = 40.3},
+                new Review() {Issue = 2, Critic = Critics.MuddyCritic, Score = 40.3},
+            };
+            var expectedResults = new[]
+            {
+                "MuddyCritic oceni³ nr 1 'Numer 1' na -12,12.",
+                "RottenTornadoes oceni³ nr 1 'Numer 1' na 391691234,49.",
+                "RottenTornadoes oceni³ nr 2 'Numer 2' na 0,00.",
+                "MuddyCritic oceni³ nr 2 'Numer 2' na 40,30.",
+                "MuddyCritic oceni³ nr 2 'Numer 2' na 40,30.",
+                "MuddyCritic oceni³ nr 2 'Numer 2' na 40,30.",
+                "MuddyCritic oceni³ nr 2 'Numer 2' na 40,30.",
+            };
+            var actualResults = ComicAnalyzer.GetReviews(testComics, testReviews).ToList();
+            CollectionAssert.AreEqual(expectedResults, actualResults);
+
+        }
     }
 }
